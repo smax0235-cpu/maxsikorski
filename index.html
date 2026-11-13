@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Max – fotografia uliczna</title>
+<meta name="description" content="Fotografia uliczna i podróżnicza. Ostre światło, mocne kolory i ludzie w swoim żywiole.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/katania-dachy-targu.jpg">
+<style>
+:root{
+  --paper:#fffcf8;--ink:#2b2728;--night:#121212;--pad:15px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 12.5px/1.4 "IBM Plex Mono",ui-monospace,Menlo,monospace;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{all:unset;cursor:pointer}
+:focus-visible{outline:1px solid currentColor;outline-offset:3px}
+img{display:block;max-width:100%}
+.up{text-transform:uppercase}
+.sm{font-size:10px;letter-spacing:.02em}
+.dim{opacity:.5}
+.balance{text-wrap:balance}
+
+/* ---------- preloader ---------- */
+.pre{position:fixed;inset:0;z-index:120;background:var(--paper);display:flex;align-items:center;justify-content:center;gap:1px;transition:opacity .7s var(--ease),visibility .7s}
+.pre span{width:min(16vw,140px);aspect-ratio:3/4;background:center/cover no-repeat rgba(0,0,0,.08);opacity:0;transform:translateY(8px);animation:rise .6s var(--ease) forwards}
+.pre.done{opacity:0;visibility:hidden}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* ---------- masthead ---------- */
+.mast{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:var(--pad);color:#fff;transition:color .5s ease;pointer-events:none}
+.mast.dark{color:var(--ink)}
+.mast a,.mast button{pointer-events:auto}
+.mast nav{display:flex;gap:.1em}
+.mast nav a,.mast nav span{transition:opacity .3s}
+.mast nav a{opacity:.5}
+.mast nav a:hover,.mast nav a.on{opacity:1}
+.menu-btn{display:none}
+
+.overlay{position:fixed;inset:0;z-index:101;padding:var(--pad);display:flex;justify-content:space-between;align-items:flex-start;background:rgba(255,252,248,.78);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:opacity .4s ease}
+.overlay.open{opacity:1;pointer-events:auto}
+.overlay nav{font-size:22px;line-height:1.3}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100vh;height:100svh;background:var(--night);overflow:hidden;color:#fff}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%;opacity:0;transform:scale(1.04);transition:opacity 1.4s var(--ease),transform 2.4s var(--ease)}
+.hero.ready img{opacity:.92;transform:none}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45),transparent 40%)}
+.hero-cap{position:absolute;left:var(--pad);bottom:var(--pad);z-index:1;max-width:26rem;display:flex;flex-direction:column;gap:20px}
+.plus{width:10px;height:10px;position:relative;transition:transform .4s ease}
+.plus::before,.plus::after{content:"";position:absolute;background:currentColor;left:0;top:50%;width:100%;height:1px}
+.plus::after{transform:rotate(90deg)}
+.hero-cap:hover .plus{transform:rotate(180deg)}
+
+/* ---------- project grid ---------- */
+.spacer{height:60px}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);column-gap:1px;row-gap:30px;padding:var(--pad)}
+.cell{transition:opacity .3s ease}
+.info{grid-column:1;padding-right:11px;display:flex;flex-direction:column}
+.info .sm{margin:10px 0}
+.info .desc{margin-top:40px}
+.thumb{display:flex;flex-direction:column;text-align:left}
+.thumb .sm{margin-bottom:10px;opacity:0;transition:opacity .3s ease}
+.thumb .img{aspect-ratio:3/4;width:100%;background:rgba(0,0,0,.07);overflow:hidden;transform:scale(.8);transform-origin:top;transition:transform .35s var(--ease)}
+.thumb img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+.thumb img.ok{opacity:1}
+@media (hover:hover){
+  .grid.hov .cell:not(.hl){opacity:.2}
+  .grid.hov .hl .sm{opacity:1}
+  .thumb:hover{position:relative;z-index:2}
+  .thumb:hover .img{transform:scale(1.2)}
+  .thumb{cursor:zoom-in}
+}
+
+/* ---------- text sections ---------- */
+.block{display:grid;grid-template-columns:repeat(6,1fr);column-gap:1px;padding:100px var(--pad) 0}
+.block .label{grid-column:1}
+.block .body{grid-column:3 / span 3;display:flex;flex-direction:column;gap:1.4em;max-width:36rem}
+.block .big{font-size:clamp(18px,2.1vw,26px);line-height:1.25;text-wrap:balance}
+.gear{display:grid;grid-template-columns:auto 1fr;gap:.3em 2.5em;margin:0}
+.gear dt{opacity:.5}
+.gear dd{margin:0}
+.links{display:flex;flex-wrap:wrap;gap:.1em}
+.links a{opacity:.5;transition:opacity .3s}
+.links a:hover{opacity:1}
+
+footer{display:flex;justify-content:space-between;padding:120px var(--pad) var(--pad)}
+
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;z-index:110;background:var(--paper);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.lb.open{opacity:1;pointer-events:auto}
+.lb .bar{display:flex;justify-content:space-between;align-items:center;padding:var(--pad);gap:1rem}
+.lb .ctrl{display:flex;gap:.1em}
+.lb .ctrl button{opacity:.5;transition:opacity .3s}
+.lb .ctrl button:hover{opacity:1}
+.lb .stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:0 var(--pad) var(--pad);position:relative}
+.lb .stage img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.lb .zone{position:absolute;top:0;bottom:0;width:50%}
+.lb .zone.l{left:0;cursor:w-resize}.lb .zone.r{right:0;cursor:e-resize}
+.lb .foot{display:flex;justify-content:space-between;padding:0 var(--pad) var(--pad)}
+
+/* ---------- mobile ---------- */
+@media (max-width:760px){
+  .mast nav{display:none}
+  .menu-btn{display:block}
+  .grid{grid-template-columns:repeat(2,1fr);row-gap:20px;column-gap:8px}
+  .info{grid-column:1 / -1;padding:30px 0 0}
+  .info .desc{margin-top:12px;max-width:30rem}
+  .thumb .img{transform:none}
+  .thumb .sm{opacity:1}
+  .block{grid-template-columns:1fr;row-gap:20px;padding-top:80px}
+  .block .label,.block .body{grid-column:1}
+  footer{padding-top:80px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important}
+}
+</style>
+</head>
+<body>
+
+<div class="pre" id="pre" aria-hidden="true"></div>
+
+<header class="mast" id="mast">
+  <a href="#top">Max</a>
+  <nav aria-label="Główna nawigacja">
+    <a href="#prace">Prace</a><span>,</span>&nbsp;<a href="#o-mnie">O mnie</a><span>,</span>&nbsp;<a href="#kontakt">Kontakt</a>
+  </nav>
+  <button class="menu-btn" id="menuOpen" aria-expanded="false" aria-controls="overlay">= Menu</button>
+</header>
+
+<div class="overlay" id="overlay" aria-hidden="true">
+  <nav aria-label="Menu"><a href="#top">Start</a>, <a href="#prace">Prace</a>, <a href="#o-mnie">O mnie</a>, <a href="#kontakt">Kontakt</a></nav>
+  <button id="menuClose">- Menu</button>
+</div>
+
+<main id="top">
+  <section class="hero" id="hero">
+    <img id="heroImg" alt="">
+    <a class="hero-cap" href="#prace">
+      <p class="balance">Fotografia uliczna i podróżnicza. Ostre światło, mocne kolory i ludzie w swoim żywiole.</p>
+      <span class="plus" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <div class="spacer"></div>
+
+  <section id="prace" aria-label="Prace">
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="block" id="o-mnie">
+    <p class="label up">O mnie</p>
+    <div class="body">
+      <p class="big">Fotografuję ulice, muzea i miejsca, w których człowiek wydaje się mały. Interesuje mnie samotna postać, światło i cisza w kadrze.</p>
+      <p>Poza ulicą robię sesje portretowe z charakterem. Każde zdjęcie wywołuję w Lightroomie.</p>
+      <dl class="gear">
+        <dt>Aparat</dt><dd>Canon EOS 6D</dd>
+        <dt>Obiektywy</dt><dd>RF 50 mm f/1.8, EF 17–40 mm f/4L</dd>
+        <dt>Obróbka</dt><dd>Adobe Lightroom</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="block" id="kontakt">
+    <p class="label up">Kontakt</p>
+    <div class="body">
+      <p class="big">Chcesz sesję portretową albo zdjęcie do publikacji? Napisz.</p>
+      <p class="links"><a href="mailto:twoj@email.pl">twoj@email.pl</a><span>,</span>&nbsp;<a href="https://instagram.com/" rel="noopener">Instagram</a></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© <span id="yr"></span> Max</span>
+  <a href="#top" class="dim">Do góry ↑</a>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia" aria-hidden="true">
+  <div class="bar">
+    <span id="lbNum"></span>
+    <div class="ctrl"><button id="prev">Wstecz</button><span>,</span>&nbsp;<button id="next">Dalej</button><span>,</span>&nbsp;<button id="close">Zamknij</button></div>
+  </div>
+  <div class="stage" id="stage"></div>
+  <div class="foot"><span class="up" id="lbTitle"></span><span class="dim" id="lbSeries"></span></div>
+</div>
+
+<script>
+/* ============================================================
+   JAK DODAĆ SWOJE ZDJĘCIA
+   1. Wrzuć pliki JPG do folderu "img".
+   2. Dopisz zdjęcie do tablicy PHOTOS (s = seria, t = tytuł, src = ścieżka).
+   3. Nowa seria? Dodaj jej opis w obiekcie SERIES.
+   ============================================================ */
+var HERO_IDX = 2; // które zdjęcie (od 0) jest w głównym kadrze
+var SERIES = {
+  "Katania":  {kind:"Fotografia uliczna", desc:"Targ rybny, parasole i dachy. Sycylijskie miasto w ostrym południowym świetle."},
+  "Sycylia": {kind:"Fotografia podróżnicza", desc:"Ulice, wybrzeże i codzienne chwile na wyspie."},
+  "Taormina": {kind:"Fotografia podróżnicza", desc:"Antyczny teatr nad morzem i ludzie, którzy wydają się w nim bardzo mali."}
+};
+var PHOTOS = [
+  {s:"Katania",  t:"Pod czerwonymi parasolami", src:"img/katania-parasole.jpg"},
+  {s:"Katania",  t:"Rybak i miecznik",          src:"img/katania-rybak.jpg"},
+  {s:"Katania",  t:"Dachy targu",               src:"img/katania-dachy-targu.jpg"},
+  {s:"Katania",  t:"Ręka w oknie",              src:"img/katania-reka-w-oknie.jpg"},
+  {s:"Taormina", t:"Teatr Grecki",              src:"img/taormina-teatr-grecki.jpg"},
+  {s:"Sycylia", t:"Dym nad miastem", src:"img/sycylia-4361.jpg"},
+  {s:"Sycylia", t:"Przy bramie", src:"img/sycylia-4468.jpg"},
+  {s:"Sycylia", t:"Ulica i skutery", src:"img/sycylia-4500.jpg"},
+  {s:"Sycylia", t:"Linia wybrzeża", src:"img/sycylia-4677.jpg"},
+  {s:"Sycylia", t:"Drzewo na zboczu", src:"img/sycylia-4699.jpg"},
+  {s:"Sycylia", t:"Miasto nad wodą", src:"img/sycylia-4786.jpg"},
+  {s:"Sycylia", t:"Widok przez łuk", src:"img/sycylia-4802.jpg"},
+  {s:"Sycylia", t:"Na skałach", src:"img/sycylia-4821.jpg"},
+  {s:"Sycylia", t:"Wśród drzew", src:"img/sycylia-4878.jpg"},
+  {s:"Sycylia", t:"Ławka nad morzem", src:"img/sycylia-4948.jpg"},
+  {s:"Sycylia", t:"Spojrzenie na zatokę", src:"img/sycylia-4956.jpg"}
+];
+
+var $ = function(id){return document.getElementById(id)};
+var grid=$("grid"), lb=$("lb"), stage=$("stage"), cur=0, lastFocus=null;
+
+/* group photos by series, give each a number like 1.3 */
+var order=[];
+PHOTOS.forEach(function(p){if(order.indexOf(p.s)<0)order.push(p.s)});
+PHOTOS.forEach(function(p){var n=order.indexOf(p.s)+1;p.n=n;p.k=PHOTOS.filter(function(q){return q.s===p.s}).indexOf(p)+1;p.num=n+"."+p.k});
+var seq=[];
+order.forEach(function(name){PHOTOS.forEach(function(p,i){if(p.s===name)seq.push(i)})});
+
+/* preloader strip */
+var pre=$("pre");
+seq.forEach(function(i,k){var s=document.createElement("span");s.style.backgroundImage="url("+PHOTOS[i].src+")";s.style.animationDelay=(k*90)+"ms";pre.appendChild(s)});
+
+/* build grid */
+order.forEach(function(name,si){
+  var items=PHOTOS.filter(function(p){return p.s===name}), meta=SERIES[name]||{};
+  var info=document.createElement("a");info.className="cell info";info.href="#";info.dataset.s=name;
+  info.innerHTML='<p class="sm"></p><p class="up"></p><p></p><p class="desc balance"></p>';
+  var ps=info.children;
+  ps[0].textContent=items.length>1?(si+1)+".1—"+(si+1)+"."+items.length:(si+1)+".1";
+  ps[1].textContent=name;ps[2].textContent=meta.kind||"Fotografia";ps[3].textContent=meta.desc||"";
+  info.addEventListener("click",function(e){e.preventDefault();open(PHOTOS.indexOf(items[0]))});
+  grid.appendChild(info);
+  items.forEach(function(p){
+    var idx=PHOTOS.indexOf(p),b=document.createElement("button");
+    b.className="cell thumb";b.dataset.s=name;b.setAttribute("aria-label",p.t+" – "+p.s);
+    b.innerHTML='<span class="sm"></span><span class="img"><img alt="" loading="lazy" decoding="async"></span>';
+    b.firstChild.textContent=p.num;
+    var im=b.querySelector("img");im.onload=function(){im.classList.add("ok")};im.src=p.src;im.alt=p.t;
+    b.addEventListener("click",function(){open(idx)});
+    grid.appendChild(b);
+  });
+});
+
+/* hover: highlight one series, fade the rest */
+grid.addEventListener("mouseover",function(e){
+  var c=e.target.closest(".cell");if(!c)return;
+  grid.classList.add("hov");
+  grid.querySelectorAll(".cell").forEach(function(x){x.classList.toggle("hl",x.dataset.s===c.dataset.s)});
+});
+grid.addEventListener("mouseleave",function(){grid.classList.remove("hov")});
+
+/* hero + preloader handoff */
+var hero=$("hero"),heroImg=$("heroImg"),hp=PHOTOS[HERO_IDX]||PHOTOS[0];
+heroImg.alt=hp.t+" – "+hp.s;
+var started=Date.now();
+function reveal(){setTimeout(function(){pre.classList.add("done");hero.classList.add("ready")},Math.max(0,1300-(Date.now()-started)))}
+heroImg.onload=reveal;heroImg.onerror=reveal;heroImg.src=hp.src;
+setTimeout(reveal,4000);
+
+/* masthead colour: white over hero, dark on paper */
+var mast=$("mast");
+function tone(){mast.classList.toggle("dark",hero.getBoundingClientRect().bottom<40)}
+addEventListener("scroll",tone,{passive:true});tone();
+
+/* active nav link */
+var navLinks=mast.querySelectorAll("nav a");
+["prace","o-mnie","kontakt"].forEach(function(id){
+  new IntersectionObserver(function(en){if(en[0].isIntersecting)navLinks.forEach(function(a){a.classList.toggle("on",a.getAttribute("href")==="#"+id)})},{rootMargin:"-45% 0px -50% 0px"}).observe($(id));
+});
+
+/* mobile menu */
+var ov=$("overlay");
+function menu(o){ov.classList.toggle("open",o);ov.setAttribute("aria-hidden",!o);$("menuOpen").setAttribute("aria-expanded",o)}
+$("menuOpen").onclick=function(){menu(true)};$("menuClose").onclick=function(){menu(false)};
+ov.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){menu(false)})});
+
+/* lightbox */
+function show(){
+  var p=PHOTOS[seq[cur]],i=document.createElement("img");
+  i.src=p.src;i.alt=p.t+" – "+p.s;
+  var l=document.createElement("span"),r=document.createElement("span");l.className="zone l";r.className="zone r";
+  l.onclick=function(){step(-1)};r.onclick=function(){step(1)};
+  stage.replaceChildren(i,l,r);
+  $("lbNum").textContent=p.num+" / "+PHOTOS.length;$("lbTitle").textContent=p.t;$("lbSeries").textContent=p.s;
+}
+function open(idx){lastFocus=document.activeElement;cur=seq.indexOf(idx);show();lb.classList.add("open");lb.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";$("close").focus()}
+function close(){lb.classList.remove("open");lb.setAttribute("aria-hidden","true");document.body.style.overflow="";if(lastFocus)lastFocus.focus()}
+function step(d){cur=(cur+d+seq.length)%seq.length;show()}
+$("close").onclick=close;$("prev").onclick=function(){step(-1)};$("next").onclick=function(){step(1)};
+var tx=null;
+stage.addEventListener("touchstart",function(e){tx=e.touches[0].clientX},{passive:true});
+stage.addEventListener("touchend",function(e){if(tx===null)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)step(dx<0?1:-1);tx=null});
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"){if(lb.classList.contains("open"))close();else menu(false)}
+  if(!lb.classList.contains("open"))return;
+  if(e.key==="ArrowLeft")step(-1);if(e.key==="ArrowRight")step(1);
+});
+$("yr").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
